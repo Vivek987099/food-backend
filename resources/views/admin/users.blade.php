@@ -6,7 +6,7 @@
     <section class="min-h-screen bg-[#0f172a] p-6 text-white">
         <!-- Search + Filter -->
         <div class="mb-6 flex flex-col gap-4 lg:flex-row">
-            <input type="text" placeholder="Search food..."
+            <input type="text" placeholder="Search food..." id="search-user"
                 class="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none focus:border-orange-500 lg:w-96" />
 
             <select class="rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none">
@@ -39,13 +39,12 @@
 
                             <td class="px-3 py-2 text-sm font-medium">{{ $user->name }}</td>
                             <td class="px-3 py-2 text-sm font-medium ">{{ $user->email }}</td>
-                          
+
                             <td class="px-3 py-2 text-sm">
-                                <form action="{{ route('users.update_status', $user->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <select onchange="this.form.submit()" name="status" id=""
-                                        class="bg-gray-900 cursor-pointer hover:bg-gray-800">
+                                <form>
+                                    <select
+                                        data-url="{{ route('users.update_status', $user->id) }}" name="status"
+                                        class="status-select bg-gray-900 cursor-pointer hover:bg-gray-800">
                                         <option value="active" {{ $user->status == 'active' ? 'selected' : '' }}>
                                             Active
                                         </option>
@@ -55,7 +54,7 @@
                                     </select>
                                 </form>
                             </td>
-                           
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -67,7 +66,5 @@
 
 
 @push('script')
-    <script>
-        
-    </script>
+    <script src="{{ asset('/js/user.js') }}"></script>
 @endpush

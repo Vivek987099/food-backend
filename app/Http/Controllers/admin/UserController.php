@@ -17,6 +17,9 @@ class UserController extends Controller
         $user->update([
             'status'=>$request->status
         ]);
-        return redirect()->back();
+        return response()->json([
+            'status'=>true,
+            'message'=>'Status updated successfully'
+        ]);
     }
 }
