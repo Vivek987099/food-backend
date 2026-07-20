@@ -66,5 +66,5 @@
 
 
 @push('script')
-    <script src="{{ asset('/js/user.js') }}"></script>
+    <script src="{{ asset('/js/index.js') }}"></script>
 @endpush

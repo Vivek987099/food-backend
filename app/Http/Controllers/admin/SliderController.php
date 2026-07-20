@@ -36,6 +36,9 @@ class SliderController extends Controller
             'status' => $request->status,
         ]);
 
-        return back();
+        return response()->json([
+            'status'=>true,
+            'message'=>'Status updated successfully'
+        ]);
     }
 }

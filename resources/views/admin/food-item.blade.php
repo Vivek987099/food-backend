@@ -67,11 +67,9 @@
                             <td class="px-6 py-4"><i class="fa-solid fa-indian-rupee-sign text-sm"></i> {{ $item->price }}
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{route('foods.updateStatus',$item->id)}}" method="POST">
-                                    @csrf
-                                    @method("PATCH")
-                                    <select onchange="this.form.submit()" name="status" id=""
-                                        class="bg-gray-900 cursor-pointer hover:bg-gray-800">
+                                <form>
+                                    <select data-url="{{ route('foods.updateStatus',$item->id) }}" name="status" 
+                                        class="status-select bg-gray-900 cursor-pointer hover:bg-gray-800">
                                         <option value="1" {{ $item->is_available == '1' ? 'selected' : '' }}>Active
                                         </option>
                                         <option value="0" {{ $item->is_available == '0' ? 'selected' : '' }}>
@@ -104,3 +102,7 @@
     </div>
 
 @endsection
+
+@push('script')
+    <script src="{{ asset('js/index.js') }}" ></script>
+@endpush

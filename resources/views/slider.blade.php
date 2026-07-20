@@ -44,24 +44,18 @@
                                 @endif ----
                             </td>
                             <td class="px-3 py-2 text-sm">
-                                <form action="{{ route('sliders.updateStatus', $item->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <select onchange="this.form.submit()" name="status" id=""
-                                        class="bg-gray-900 cursor-pointer hover:bg-gray-800">
+                                <form>
+                                    <select name="status" data-url="{{ route('sliders.updateStatus', $item->id) }}"
+                                        class="status-select bg-gray-900 cursor-pointer hover:bg-gray-800">
                                         <option value="1" {{ $item->status == '1' ? 'selected' : '' }}>
                                             Active
                                         </option>
                                         <option value="0" {{ $item->status == '0' ? 'selected' : '' }}>
                                             InActive
                                         </option>
-
                                     </select>
                                 </form>
                             </td>
-                           
-                           
-
                             <td class="px-3 py-2 text-sm">
                                 <div class="flex gap-2">
                                     <button class="rounded-lg bg-blue-500 px-3 py-0.5 text-xs">
@@ -84,3 +78,7 @@
         </div>
     </div>
 @endsection
+
+@push('script')
+    <script src="{{ asset('js/index.js') }}" ></script>
+@endpush

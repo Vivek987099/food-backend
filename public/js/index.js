@@ -22,6 +22,4 @@ document.querySelectorAll(".status-select").forEach((select) => {
     });
 });
 
-document.getElementById("search-user").addEventListener("input", (e) => {
-    alert(e.target.value);
-});
+
