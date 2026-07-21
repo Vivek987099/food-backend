@@ -1,22 +1,23 @@
-@extends('admin.admin-layout')
+@extends('admin.layout.admin-layout')
 
-@section('title','food item')
+@section('title', 'edit food item')
 
 @section('content')
     <div class="min-h-screen bg-[#0f172a] p-6 text-white">
 
         <!-- Page Header -->
         <div class="mb-8">
-            <h1 class="text-3xl font-bold">Add Food Item</h1>
-            <p class="mt-2 text-gray-400">Create a new food item for your menu</p>
+            <h1 class="text-3xl font-bold">Update Food Item</h1>
+            <p class="mt-2 text-gray-400">Update a existing food item for your menu</p>
         </div>
 
         <!-- Form Card -->
-        <div class="max-w-4xl rounded-3xl border border-gray-800 bg-[#111827] p-8 shadow-2xl">
+        <div class="max-w-4xl mx-auto rounded-3xl border border-gray-800 bg-[#111827] p-8 shadow-2xl">
 
-            <form class="space-y-6" method="POST" enctype="multipart/form-data" action="/admin/add-food">
+            <form class="space-y-6" method="POST" enctype="multipart/form-data" action="{{ route('food-item.update',$food_item->id) }}">
                 <!-- Laravel -->
                 <!-- @csrf -->
+                @method('PUT')
 
                 <!-- Food Name -->
                 <div>
@@ -24,8 +25,8 @@
                         Food Name
                     </label>
 
-                    <input type="text" name="name" placeholder="Enter food name"
-                    name="name"
+                    <input type="text" value='{{ $food_item->name }}' name="name" placeholder="Enter food name"
+                        name="name"
                         class="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none focus:border-orange-500">
                 </div>
 
@@ -38,9 +39,11 @@
                             Price
                         </label>
 
-                        <input type="number" name="price" placeholder="₹ 199"
-                        name="price"
+                        <input type="number" value='{{ $food_item->price }}' name="price" placeholder="₹ 199"
+                            name="price"
                             class="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none focus:border-orange-500">
+
+
                     </div>
 
                     <!-- Category -->
@@ -54,7 +57,7 @@
 
                             <option>Select Category</option>
                             @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}"  {{ $food_item->category_id=== $category->id ? 'SELECTED':'' }}>{{ $category->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -68,11 +71,18 @@
                     </label>
 
                     <div
-                        class="rounded-2xl border-2 border-dashed border-gray-700 bg-[#1f2937] p-8 text-center hover:border-orange-500">
-                        <input type="file" name="image" class="w-full text-gray-400">
-                        <p class="mt-3 text-sm text-gray-500">
-                            Upload JPG / PNG (Max 2MB)
-                        </p>
+                        class="">
+                        <div class="grid grid-cols-4 gap-x-5">
+                            <div class="col-span-2 rounded-2xl border-2 border-dashed border-gray-700 bg-[#1f2937] p-8 text-center hover:border-orange-500">
+                                <input type="file" name="image" class="w-full text-gray-400">
+                                <p class="mt-3 text-sm text-gray-500">
+                                    Upload JPG / PNG (Max 2MB)
+                                </p>
+                            </div>
+                            <div class="col-span-2">
+                                <img src="http://localhost:8000/storage/{{ $food_item->image }}" alt="" class="rounded-lg size-40 mx-auto outline outline-red-500">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -83,8 +93,8 @@
                     </label>
 
                     <textarea rows="5" name="description" placeholder="Enter food description..."
-                    name="description"
-                        class="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none focus:border-orange-500"></textarea>
+                        name="description"
+                        class="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none focus:border-orange-500">{{ $food_item->description }}</textarea>
                 </div>
 
                 <!-- Buttons -->

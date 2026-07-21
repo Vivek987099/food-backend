@@ -1,4 +1,4 @@
-@extends('admin.admin-layout')
+@extends('admin.layout.admin-layout')
 
 @section('title', 'add slider')
 
@@ -8,17 +8,18 @@
 
         <!-- Form Card -->
         <div class="max-w-4xl mx-auto rounded-3xl border border-gray-800 bg-[#111827] p-8 shadow-2xl">
-            <form class="space-y-6" method="POST" enctype="multipart/form-data" action="/admin/sliders" class="w-full">
+            <form class="space-y-6" method="POST" enctype="multipart/form-data" action="{{ route('slider.update',$slider->id) }}" class="w-full">
                 <!-- Laravel -->
                 <!-- @csrf -->
-
+                @method('PUT')
                 <!-- Food Name -->
                 <div>
                     <label class="mb-2 block text-sm font-medium text-gray-300">
                         Food Name
                     </label>
 
-                    <input type="text" name="name" placeholder="Enter food name" name="name"
+                    <input type="text" value="{{ $slider->title ? $slider->title : 'No title available' }}" name="name"
+                        placeholder="Enter food name" name="name"
                         class="w-full rounded-xl border border-gray-700 bg-[#1f2937] px-4 py-3 outline-none focus:border-orange-500">
                 </div>
 
@@ -34,6 +35,11 @@
                         <p class="mt-3 text-sm text-gray-500">
                             Upload JPG / PNG (Max 2MB)
                         </p>
+                        <div class="h-1 w-full bg-orange-500/50 rounded-2xl mt-10"></div>
+                        <div class="mt-3">
+                            <h1 class="my-3 text-xl uppercase">Current image</h1>
+                            <img src="http://localhost:8000/storage/{{$slider->image}}" class="rounded-2xl" alt="">
+                        </div>
                     </div>
                 </div>
 

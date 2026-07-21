@@ -12,7 +12,7 @@ class SliderController extends Controller
     public function index()
     {
         $sliders = Slider::all();
-        return view('slider', compact('sliders'));
+        return view('admin.slider.slider', compact('sliders'));
     }
 
     public function store(Request $request)
@@ -30,6 +30,12 @@ class SliderController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $slider = Slider::find($id);
+        return view('admin.slider.edit', compact('slider'));
+    }
+
     public function update_status(Request $request, Slider $slider)
     {
         $slider->update([
@@ -37,8 +43,41 @@ class SliderController extends Controller
         ]);
 
         return response()->json([
-            'status'=>true,
-            'message'=>'Status updated successfully'
+            'status' => true,
+            'message' => 'Status updated successfully'
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $slider = Slider::find($id);
+        $file_path = $slider->image;
+        if ($request->hasFile('image')) {
+            if ($slider->image !== null) {
+                $path = public_path('storage/'.$slider->image);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+            $file_path = $request->file('image')->store('image', 'public');
+        }
+        $slider->update([
+            'title' => $request->name,
+            'image' => $file_path
+        ]);
+        return redirect('admin/sliders')->with('success', 'Food item updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $slider =  Slider::find($id);
+        if ($slider->image !== null) {
+            $path = public_path('storage/'. $slider->image);
+            if (file_exists($path)) {
+                unlink($path);
+            }
+        }
+        $slider->delete();
+        return redirect('admin/sliders')->with('success', 'Slider deleted successfully');
     }
 }

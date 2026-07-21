@@ -1,4 +1,4 @@
-@extends('admin.admin-layout')
+@extends('admin.layout.admin-layout')
 
 @section('title', 'orders')
 
@@ -39,9 +39,7 @@
                                     class="h-14 w-20 rounded-md object-cover">
                             </td>
                             <td class="px-3 py-2 text-sm">
-                                @if ($item->title)
-                                    {{ $item->title }}
-                                @endif ----
+                                    {{ $item->title ? $item->title : '----' }}
                             </td>
                             <td class="px-3 py-2 text-sm">
                                 <form>
@@ -58,10 +56,10 @@
                             </td>
                             <td class="px-3 py-2 text-sm">
                                 <div class="flex gap-2">
-                                    <button class="rounded-lg bg-blue-500 px-3 py-0.5 text-xs">
+                                    <a href="{{route('slider.edit',$item->id)}}" class="rounded-lg bg-blue-500 px-3 py-0.5 text-xs">
                                         Edit
-                                    </button>
-                                    <form action="" method="POST">
+                                    </a>
+                                    <form action="{{route('slider.destroy',$item->id)}}" method="POST">
                                         @csrf
                                         @method('DELETE')
 

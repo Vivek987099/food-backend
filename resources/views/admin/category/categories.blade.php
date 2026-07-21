@@ -1,4 +1,4 @@
-@extends('admin.admin-layout')
+@extends('admin.layout.admin-layout')
 
 @section('title', 'category')
 
@@ -50,9 +50,9 @@
                             <td class="px-6 py-4">{{ $category->name }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex gap-2">
-                                    <button class="rounded-lg bg-blue-500 px-3 py-2 text-sm">
+                                    <a href="{{route('category.edit',$category->slug)}}" class="rounded-lg bg-blue-500 px-3 py-2 text-sm">
                                         Edit
-                                    </button>
+                                    </a>
 
                                     <form action="{{ route('category.destroy', $category->id) }}" method="POST">
                                         @csrf

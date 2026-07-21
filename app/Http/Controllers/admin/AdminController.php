@@ -31,7 +31,7 @@ class AdminController extends Controller
     public function show_categories()
     {
         $categories = Category::all();
-        return view('admin.categories', compact('categories'));
+        return view('admin.category.categories', compact('categories'));
     }
 
    
@@ -40,7 +40,7 @@ class AdminController extends Controller
     public function addFoodItem()
     {
         $categories = Category::all();
-        return view('admin.add-food-item', compact('categories'));
+        return view('admin.food-item.add-food-item', compact('categories'));
     }
 
     public function storeFoodItem(Request $request)

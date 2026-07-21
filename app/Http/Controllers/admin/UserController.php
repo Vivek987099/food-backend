@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index(){
         $users = User::where('role','customer')->get();
-        return view('admin.users',compact('users'));
+        return view('admin.users.users',compact('users'));
     }
 
     public function update_status(Request $request, User $user){

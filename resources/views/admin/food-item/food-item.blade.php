@@ -1,15 +1,11 @@
-@extends('admin.admin-layout')
+@extends('admin.layout.admin-layout')
 
 @section('title', 'food items')
 
 
 @section('content')
 
-    @if (session('status'))
-        <div class="bg-white/40 px-10 py-2 rounded-xl border w-[500px] border-white absolute bottom-10 right-5 text-white">
-            {{ session('status') }}
-        </div>
-    @endif
+
     <div class="min-h-screen bg-[#0f172a] p-6 text-white">
 
 
@@ -25,7 +21,12 @@
                 + Add Food Item
             </a>
         </div>
-
+        @if (session('success'))
+            <div id="alert"
+                class="fixed top-35 right-5 flex items-center gap-3 bg-green-600/30 border border-green-600 text-green-600 px-5 py-3 rounded-xl shadow-xl z-50 transition-all duration-500">
+                <span>{{ session('success') }}</span>
+            </div>
+        @endif
         <!-- Search + Filter -->
         <div class="mb-6 flex flex-col gap-4 lg:flex-row">
             <input type="text" placeholder="Search food..."
@@ -68,22 +69,23 @@
                             </td>
                             <td class="px-6 py-4">
                                 <form>
-                                    <select data-url="{{ route('foods.updateStatus',$item->id) }}" name="status" 
+                                    <select data-url="{{ route('foods.updateStatus', $item->id) }}" name="status"
                                         class="status-select bg-gray-900 cursor-pointer hover:bg-gray-800">
                                         <option value="1" {{ $item->is_available == '1' ? 'selected' : '' }}>Active
                                         </option>
                                         <option value="0" {{ $item->is_available == '0' ? 'selected' : '' }}>
                                             InActive</option>
-                                        
+
                                     </select>
                                 </form>
                             </td>
 
                             <td class="px-6 py-4">
                                 <div class="flex gap-2">
-                                    <button class="rounded-lg bg-blue-500 px-3 py-2 text-sm">
+                                    <a href="{{ route('food-item.show', $item->slug) }}"
+                                        class="rounded-lg bg-blue-500 px-3 py-2 text-sm">
                                         Edit
-                                    </button>
+                                    </a>
                                     <form action="{{ route('foods.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
@@ -104,5 +106,20 @@
 @endsection
 
 @push('script')
-    <script src="{{ asset('js/index.js') }}" ></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const alert = document.getElementById('alert');
+
+            if (alert) {
+                setTimeout(() => {
+                    alert.classList.add('opacity-0');
+
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 500); // fade out complete hone ke baad remove
+                }, 3000);
+            }
+        });
+    </script>
+    <script src="{{ asset('js/index.js') }}"></script>
 @endpush
