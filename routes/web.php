@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\admin\AdminAuthController;
-use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\FoodItemController;
@@ -15,7 +14,6 @@ Route::get('/', function () {
     return redirect('/admin/login');
 });
 
-Route::get('/monthly-orders',[DashboardController::class,'monthly_orders']);
 
 Route::prefix('admin')->group(function () {
     Route::get('/login', function () {
@@ -28,30 +26,32 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::middleware('auth')->group(function () {
+        // dashboard
         Route::controller(DashboardController::class)->group(function () {
             Route::get('/dashboard', 'index')->name('dashboard.index');
+            Route::get('/monthly-orders',  'monthly_orders');
         });
 
-        Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
-        Route::get('/category', [AdminController::class, 'show_categories']);
-        Route::get('/category/{category}/edit',[CategoryController::class,'edit'])->name('category.edit');
-        Route::put('/category/{category}/update',[CategoryController::class,'update'])->name('category.update');
 
-
-        Route::view('/add-category', 'admin.category.add-category');
-        Route::post('/add-category', [AdminController::class, 'addCategory']);
-
-
-        Route::get('/add-food', [AdminController::class, 'addFoodItem']);
-        Route::post('/add-food', [AdminController::class, 'storeFoodItem']);
+        // category routes
+        Route::controller(CategoryController::class)->group(function () {
+            Route::get('/category',  'show_categories')->name('category.show_categories');
+            Route::delete('/category/{id}',  'destroy')->name('category.destroy');
+            Route::get('/category/{category}/edit',  'edit')->name('category.edit');
+            Route::put('/category/{category}/update',  'update')->name('category.update');
+            Route::view('/add-category', 'admin.category.add-category');
+            Route::post('/add-category',  'addCategory')->name('category.add');
+        });
 
         // foot items routes
         Route::controller(FoodItemController::class)->group(function () {
             Route::get('/foods', 'show_food_items');
             Route::delete('/foods/{id}', 'destroy')->name('foods.destroy');
             Route::patch('/foods/{food_item}/status',  'update_status')->name('foods.updateStatus');
-            Route::get('/food/{food}/update','show')->name('food-item.show');
-            Route::put('/food/{food}/update','update')->name('food-item.update');
+            Route::get('/food/{food}/update', 'show')->name('food-item.show');
+            Route::put('/food/{food}/update', 'update')->name('food-item.update');
+            Route::get('/add-food',  'addFoodItem')->name('foods.add');
+            Route::post('/add-food',  'storeFoodItem')->name('foods.store');
         });
 
         // order routes
@@ -68,7 +68,7 @@ Route::prefix('admin')->group(function () {
             Route::get('/slider/{slider}/edit', 'edit')->name('slider.edit');
             Route::put('/slider/{slider}/update', 'update')->name('slider.update');
             Route::patch('/sliders/{slider}/status', 'update_status')->name('sliders.updateStatus');
-            Route::delete('/slider/{slider}','destroy')->name('slider.destroy');
+            Route::delete('/slider/{slider}', 'destroy')->name('slider.destroy');
         });
 
         // user routes 

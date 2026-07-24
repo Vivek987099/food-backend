@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\FoodItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use function PHPUnit\Framework\fileExists;
 
@@ -22,6 +23,32 @@ class FoodItemController extends Controller
         $categories = Category::all();
         $food_item = FoodItem::where('slug', $slug)->first();
         return view('admin.food-item.edit', compact('categories', 'food_item'));
+    }
+
+    public function addFoodItem()
+    {
+        $categories = Category::all();
+        return view('admin.food-item.add-food-item', compact('categories'));
+    }
+    public function storeFoodItem(Request $request)
+    {
+        $validateReq = $request->validate([
+            'name' => 'required',
+            'price' => 'required',
+            'image' => 'nullable|image',
+            'description' => 'required',
+            'category_id' => 'required'
+        ]);
+
+        if ($request->hasFile('image')) {
+            $validateReq['image'] = $request->file('image')->store('image', 'public');
+        }
+
+        $food_item = FoodItem::create($validateReq);
+        $food_item->slug = Str::slug($food_item->name) . '-' . $food_item->id;
+        if ($food_item->save()) {
+            return redirect('/admin/foods')->with('status', 'Items added successfully');
+        }
     }
 
     public function update_status(Request $request, FoodItem $food_item)
@@ -46,16 +73,16 @@ class FoodItemController extends Controller
                     unlink($food_item->image);
                 }
             }
-            $file_path = $request->file('image')->store('image','public');
+            $file_path = $request->file('image')->store('image', 'public');
         }
         $food_item->update([
             'name' => $request->name,
             'price' => $request->price,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'image'=>$file_path
+            'image' => $file_path
         ]);
-        return redirect('admin/foods')->with('success','Food item updated successfully');
+        return redirect('admin/foods')->with('success', 'Food item updated successfully');
     }
 
     public function destroy(Request $request)

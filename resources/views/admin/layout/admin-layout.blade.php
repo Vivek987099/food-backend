@@ -109,9 +109,9 @@
             </div>
 
             <!-- Add Food Button -->
-            <button class="rounded-xl bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600">
+            <a href="{{ route('foods.add') }}" class="rounded-xl bg-orange-500 px-4 py-2 font-medium text-white transition hover:bg-orange-600">
                 + Add Food
-            </button>
+            </a>
 
             <!-- Notification -->
             <button class="relative rounded-full bg-[#1f2937] p-3 text-white hover:bg-gray-700">

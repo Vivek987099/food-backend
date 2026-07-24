@@ -1,5 +1,5 @@
 const loadMonthlyOrders = async () => {
-    const response = await fetch("http://localhost:8000/monthly-orders", {
+    const response = await fetch("http://localhost:8000/admin/monthly-orders", {
         method: "GET",
     });
     const data = await response.json();
