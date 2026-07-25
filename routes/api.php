@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FoodItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckBlockedUserMiddleware;
@@ -76,4 +77,6 @@ Route::middleware(['auth:sanctum',CheckBlockedUserMiddleware::class])->group(fun
             Route::post('/change-password', 'change_password');
         });
     });
+
+    Route::apiResource('/profiles',ProfileController::class);
 });
